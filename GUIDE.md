@@ -1,220 +1,197 @@
-# LinkedIn Outreach Tool — Complete Setup & User Guide
-
-**For people who have never opened a terminal before.**
-This guide walks you through everything — installing the tool, setting up email finding, and running your first search. Follow each step in order.
+# LinkedIn Outreach Tool — Setup & User Guide
 
 ---
 
-## What This Tool Does
-
-This tool finds LinkedIn profiles of people matching a job title at specific companies. It shows you their name, job title, location, and — if you have a FinalScout account — their professional email address. You can then export everything to a spreadsheet (CSV).
-
-**Example:** Search for "HR Manager" at "BlackRock" and "HSBC" → get a list of 10 people per company with emails, ready to export.
+## Part 1 — Setup (One Time Only)
 
 ---
 
-## Part 1 — One-Time Setup
+### On Mac
 
-You only need to do this once. After that, you just run one command each time.
+**Step 1 — Open Terminal**
 
----
-
-### Step 1 — Install Python
-
-Python is the engine that runs the tool. You need version 3.10 or higher.
-
-#### On Mac
-
-1. Open **Terminal**
-   - Press `Cmd + Space`, type `Terminal`, press Enter
-2. Type this and press Enter:
-   ```
-   python3 --version
-   ```
-3. If you see `Python 3.10` or higher — you already have it. Skip to Step 2.
-4. If you see an error or a lower version, go to **python.org/downloads**, click the big yellow "Download Python" button, open the downloaded file, and click through the installer.
-5. After installing, close Terminal and open it again. Type `python3 --version` to confirm.
-
-#### On Windows
-
-1. Open **Command Prompt**
-   - Press the Windows key, type `cmd`, press Enter
-2. Type this and press Enter:
-   ```
-   python --version
-   ```
-3. If you see `Python 3.10` or higher — skip to Step 2.
-4. If not: go to **python.org/downloads**, click "Download Python", open the installer.
-   - **Important:** On the first screen of the installer, tick the box that says **"Add Python to PATH"** before clicking Install.
-5. After installing, close and reopen Command Prompt. Type `python --version` to confirm.
+Press `Cmd + Space`, type **Terminal**, press Enter.
 
 ---
 
-### Step 2 — Download the Tool
+**Step 2 — Install Python**
 
-1. Go to: **https://github.com/kirill-tiukin/linkedin-scraper**
-2. Click the green **"Code"** button
-3. Click **"Download ZIP"**
-4. Find the downloaded ZIP file (usually in your Downloads folder)
-5. **Unzip it:**
-   - **Mac:** Double-click the ZIP file
-   - **Windows:** Right-click → Extract All → Extract
-6. You now have a folder called `linkedin-scraper-main`. Move it somewhere easy to find, like your Desktop.
+Paste this and press Enter:
+
+```
+python3 --version
+```
+
+If you see `Python 3.10` or higher — skip to Step 3.
+
+If you see an error, paste this and press Enter (installs Python automatically):
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew install python3
+```
+
+This takes a few minutes. When it finishes, close Terminal and open it again.
 
 ---
 
-### Step 3 — Run the Setup Script
+**Step 3 — Download and set up the tool**
 
-This installs everything the tool needs. You only do this once.
+Paste this entire block and press Enter:
 
-#### On Mac
+```
+git clone https://github.com/kirill-tiukin/linkedin-scraper ~/Desktop/linkedin-scraper && cd ~/Desktop/linkedin-scraper && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && playwright install chromium
+```
 
-1. Open **Terminal**
-2. Type `cd ` (with a space after it — don't press Enter yet)
-3. Drag the `linkedin-scraper-main` folder from your Desktop into the Terminal window. The path fills in automatically.
-4. Press **Enter**
-5. Now type this and press Enter:
-   ```
-   python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && playwright install chromium
-   ```
-6. Wait — this takes 2–5 minutes. You'll see a lot of text scrolling. That's normal.
-7. When it finishes and you see a `$` prompt again, setup is complete.
+This takes 2–5 minutes. Wait until you see the `$` prompt again.
 
-#### On Windows
+---
 
-1. Open **Command Prompt**
-2. Type `cd ` (with a space — don't press Enter yet)
-3. Open File Explorer, navigate to the `linkedin-scraper-main` folder, click the address bar at the top, copy the path
-4. Paste it into Command Prompt after `cd ` and press **Enter**
-5. Now type this and press Enter:
-   ```
-   python -m venv .venv && .venv\Scripts\activate && pip install -r requirements.txt && playwright install chromium
-   ```
-6. Wait 2–5 minutes for everything to install.
+**Step 4 — Start the tool**
+
+Paste this and press Enter:
+
+```
+cd ~/Desktop/linkedin-scraper && source .venv/bin/activate && python3 app.py
+```
+
+Then open your browser and go to: **http://localhost:5050**
+
+The tool is running. Keep Terminal open while you use it.
+
+---
+
+### On Windows
+
+**Step 1 — Open Command Prompt**
+
+Press the Windows key, type **cmd**, press Enter.
+
+---
+
+**Step 2 — Install Python**
+
+Paste this and press Enter:
+
+```
+winget install Python.Python.3.12
+```
+
+When it finishes, close Command Prompt and open it again.
+
+---
+
+**Step 3 — Install Git**
+
+Paste this and press Enter:
+
+```
+winget install Git.Git
+```
+
+When it finishes, close Command Prompt and open it again.
+
+---
+
+**Step 4 — Download and set up the tool**
+
+Paste this entire block and press Enter:
+
+```
+git clone https://github.com/kirill-tiukin/linkedin-scraper %USERPROFILE%\Desktop\linkedin-scraper && cd %USERPROFILE%\Desktop\linkedin-scraper && python -m venv .venv && .venv\Scripts\activate && pip install -r requirements.txt && playwright install chromium
+```
+
+This takes 2–5 minutes. Wait until you see a prompt again.
+
+---
+
+**Step 5 — Start the tool**
+
+Paste this and press Enter:
+
+```
+cd %USERPROFILE%\Desktop\linkedin-scraper && .venv\Scripts\activate && python app.py
+```
+
+Then open your browser and go to: **http://localhost:5050**
+
+The tool is running. Keep Command Prompt open while you use it.
 
 ---
 
 ## Part 2 — Every Time You Use It
 
-### Step 4 — Start the Tool
+You only need to paste one command and open your browser.
 
-#### On Mac
+**Mac:**
+```
+cd ~/Desktop/linkedin-scraper && source .venv/bin/activate && python3 app.py
+```
 
-1. Open **Terminal**
-2. Navigate to the folder (same as Step 3 above — `cd` then drag the folder)
-3. Type this and press Enter:
-   ```
-   source .venv/bin/activate && python3 app.py
-   ```
+**Windows:**
+```
+cd %USERPROFILE%\Desktop\linkedin-scraper && .venv\Scripts\activate && python app.py
+```
 
-#### On Windows
-
-1. Open **Command Prompt**
-2. Navigate to the folder
-3. Type this and press Enter:
-   ```
-   .venv\Scripts\activate && python app.py
-   ```
-
-4. Open your web browser (Chrome, Safari, Edge — any)
-5. Go to: **http://localhost:5050**
-
-You should see the LinkedIn Outreach tool. Leave the Terminal/Command Prompt window open while you use it — closing it stops the tool.
+Then go to: **http://localhost:5050**
 
 ---
 
-## Part 3 — Setting Up FinalScout (for Email Finding)
+## Part 3 — Setting Up FinalScout (Email Finding)
 
-FinalScout finds professional email addresses for the profiles you scrape. New accounts get **50 free credits**. Each credit finds one email.
+FinalScout finds professional email addresses for the people you search. New accounts get **50 free credits** — each credit finds one email. No credit is used if no email is found.
 
-### What you get with 50 credits
+**Step 1 — Create a free account**
 
-| Credits used | Emails found |
-|-------------|-------------|
-| 10 | Up to 10 emails |
-| 50 | Up to 50 emails |
+Go to **https://finalscout.com** and sign up.
 
-FinalScout only uses a credit when it actually finds an email — if no email is found, no credit is spent.
+**Step 2 — Get your API key**
 
-### How to set up FinalScout
+After signing in, go to: **https://finalscout.com/app/api/settings**
 
-1. Go to **https://finalscout.com**
-2. Click **"Sign Up"** — create a free account
-3. After signing in, go to: **https://finalscout.com/app/api/settings**
-4. You'll see your **API Key** — it looks something like: `3a2458d9a8d4253536d5869790151b91`
-5. Copy it (click the copy button or select all and Ctrl+C / Cmd+C)
-6. In the LinkedIn Outreach tool, paste it into the **"FinalScout API key"** field in the sidebar
+Copy the API key shown on that page. It looks like: `3a2458d9a8d4253536d5869790151b91`
 
-That's it. Every search you run will now automatically look up emails.
+**Step 3 — Paste it into the tool**
 
-### Buying more credits
+In the tool sidebar, find the **"FinalScout API key"** field and paste your key there.
 
-After your 50 free credits, you can buy more at **finalscout.com/app/billing**.
-Pricing is roughly $0.10–$0.50 per email depending on the plan.
+That's it — every search will now automatically look up emails.
+
+**Running out of credits?** Buy more at **https://finalscout.com/app/billing**
 
 ---
 
 ## Part 4 — Using the Tool
 
-### The Sidebar (left panel)
+### First time each session: Connect LinkedIn
 
-**Target roles** — Enter the job titles you're looking for, one per line.
-Examples:
-```
-HR Manager
-Head of HR
-Talent Acquisition
-People Operations
-```
+1. Click **"Connect"** in the sidebar
+2. A browser window opens — log in to your LinkedIn account
+3. Once logged in, the window closes automatically
+4. You'll see **"Session active ●"** — you're ready
 
-**Companies** — Enter the company names, one per line.
-Examples:
-```
-BlackRock
-HSBC
-Goldman Sachs
-```
+### Run a search
 
-**Location** — Where to search. Default is "United Kingdom". You can change this.
+Fill in the sidebar:
 
-**Max results per company** — How many people to find at each company. If you put 10 and have 2 companies, you'll get up to 20 total (10 per company).
+- **Target roles** — job titles you want to find, one per line (e.g. HR Manager)
+- **Companies** — company names, one per line (e.g. BlackRock)
+- **Location** — defaults to United Kingdom
+- **Max results per company** — how many people per company (e.g. 10)
+- **FinalScout API key** — paste your key here for emails
 
-**LinkedIn** — Shows whether you're connected. You need to connect once per session.
+Click **"Start search"** — results appear in real time.
 
-**FinalScout API key** — Paste your key here to enable email finding.
+### Download results
 
----
+Click **"↓ Download CSV"** when done. Open it in Excel or Google Sheets.
 
-### Step-by-Step: Running a Search
+### Start a new search
 
-1. **Connect LinkedIn** (first time each session)
-   - Click the **"Connect"** button in the sidebar
-   - A Chromium browser window opens — log in to your LinkedIn account
-   - Once logged in, the window closes automatically
-   - The status changes to "Session active ●"
-
-2. **Fill in your search**
-   - Enter roles (one per line)
-   - Enter companies (one per line)
-   - Set how many results per company
-   - Paste your FinalScout API key (optional but recommended)
-
-3. **Click "Start search"**
-   - Results appear in real time as they're found
-   - The status bar at the bottom of the sidebar shows progress
-   - Company pills at the top show which companies are done
-
-4. **Download your results**
-   - Click **"↓ Download CSV"** when the search finishes
-   - Open the CSV in Excel or Google Sheets
-
-5. **Run a new search**
-   - Click **"↺ New Search"** to clear results and start fresh
-   - Your previous results are saved until you click this
+Click **"↺ New Search"** to clear the results and search again.
 
 ---
 
-### Understanding Your Results
+## Part 5 — Understanding Your Results
 
 | Column | What it means |
 |--------|--------------|
@@ -223,61 +200,36 @@ Goldman Sachs
 | Company | Company they work at |
 | Location | Where they're based |
 | Email | Professional email (if FinalScout found one) |
-| Via | Where the result came from: LI = LinkedIn, DDG = DuckDuckGo |
+| Via | LI = found on LinkedIn, DDG = found on DuckDuckGo |
 | ↗ | Link to their LinkedIn profile |
 
 ---
 
-## Part 5 — Tips & Troubleshooting
+## Part 6 — Troubleshooting
 
-### Getting better results
+**"Session expired" or "Not connected"**
+Click **"Reconnect"** and log in to LinkedIn again.
 
-- **Be specific with roles.** "HR Manager" finds more than "Human Resources".
-- **One company at a time** if you want to check results before continuing.
-- **Start with 5–10 results** per company to test before going to 50.
-- **UK results only** — the tool filters non-UK profiles automatically.
+**0 results found**
+- Check the company name is spelled exactly as it appears on LinkedIn
+- Try a simpler role name ("HR" instead of "Senior HR Business Partner")
 
-### FinalScout is not finding emails
-
-- Check your credit balance at **finalscout.com/app/billing**
+**No emails showing**
+- Check your FinalScout credits at **https://finalscout.com/app/billing**
 - Some profiles simply don't have a findable email — that's normal
-- FinalScout works best for people with a clear professional presence
 
-### "Session expired" error
-
-Your LinkedIn session timed out. Click **"Reconnect"** and log in again.
-
-### The tool finds 0 results
-
-- Check that your company name is spelled exactly as it appears on LinkedIn
-- Try a broader role name ("HR" instead of "Senior HR Business Partner")
-- Make sure your LinkedIn session is active (green dot)
-
-### Closing and reopening the tool
-
-When you close Terminal/Command Prompt, the tool stops. Next time:
-1. Open Terminal / Command Prompt
-2. Navigate to the folder
-3. Run the start command from Step 4
-4. Your previous results will still be there in the browser
-
-### The browser window doesn't open when I click Connect
-
-Make sure you ran the start command first and the terminal window is still open.
+**Tool stopped working**
+Close Terminal/Command Prompt and run the start command again.
 
 ---
 
-## Quick Reference Card
+## Quick Reference
 
-| Task | Mac command | Windows command |
-|------|------------|----------------|
-| Start the tool | `source .venv/bin/activate && python3 app.py` | `.venv\Scripts\activate && python app.py` |
-| Open in browser | Go to http://localhost:5050 | Go to http://localhost:5050 |
+| | Mac | Windows |
+|--|-----|---------|
+| **Start the tool** | `cd ~/Desktop/linkedin-scraper && source .venv/bin/activate && python3 app.py` | `cd %USERPROFILE%\Desktop\linkedin-scraper && .venv\Scripts\activate && python app.py` |
+| **Open in browser** | http://localhost:5050 | http://localhost:5050 |
 
-**FinalScout:** https://finalscout.com · API key at https://finalscout.com/app/api/settings
+**FinalScout API key:** https://finalscout.com/app/api/settings
 
-**Tool source:** https://github.com/kirill-tiukin/linkedin-scraper
-
----
-
-*If something isn't working, take a screenshot of the error and share it.*
+**Tool download (if needed):** https://github.com/kirill-tiukin/linkedin-scraper
