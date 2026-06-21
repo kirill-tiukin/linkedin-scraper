@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkedIn Outreach</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+      <div class="logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="9" height="9" rx="2" fill="var(--accent)"/>
+          <rect x="13" y="2" width="9" height="9" rx="2" fill="var(--accent)" opacity=".5"/>
+          <rect x="2" y="13" width="9" height="9" rx="2" fill="var(--accent)" opacity=".5"/>
+          <rect x="13" y="13" width="9" height="9" rx="2" fill="var(--accent)" opacity=".3"/>
+        </svg>
+        <span class="logo-title">LinkedIn Outreach</span>
+      </div>
+
+      <!-- Target Roles -->
+      <div class="panel">
+        <label class="field-label">Target roles <span class="muted">(one per line)</span></label>
+        <textarea id="search-position" class="textarea" rows="5"
+          placeholder="HR Manager&#10;Talent Acquisition&#10;Recruiter&#10;People Operations&#10;Head of Partnerships"></textarea>
+      </div>
+
+      <!-- Companies -->
+      <div class="panel" style="margin-top:.5rem">
+        <label class="field-label">Companies <span class="muted">(one per line)</span></label>
+        <textarea id="search-company" class="textarea" rows="5"
+          placeholder="Google&#10;Microsoft&#10;Stripe&#10;Airbnb&#10;Notion"></textarea>
+      </div>
+
+      <!-- Location + Max results -->
+      <div class="row-2col">
+        <div>
+          <label class="field-label">Location</label>
+          <input id="search-location" class="input" type="text" value="United Kingdom" />
+        </div>
+        <div>
+          <label class="field-label">Max results <span class="muted">per company</span></label>
+          <input id="search-n" class="input" type="number" placeholder="e.g. 10" min="1" max="500" />
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- LinkedIn session -->
+      <div class="panel">
+        <label class="field-label">LinkedIn</label>
+        <div class="auth-status" id="auth-status">
+          <span class="auth-dot" id="auth-dot"></span>
+          <span id="auth-label">Checking…</span>
+          <button class="auth-login-btn" id="connect-btn" onclick="connectLinkedIn()">Connect</button>
+        </div>
+        <div id="connect-status" class="connect-status hidden"></div>
+      </div>
+
+      <!-- FinalScout -->
+      <div class="panel" style="margin-top:.25rem">
+        <label class="field-label">FinalScout API key <span class="badge-opt">optional</span></label>
+        <input id="finalscout-key" class="input" type="password" placeholder="Enables email lookup" autocomplete="off" />
+        <p class="hint">Adds professional emails to every result</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Run / Stop -->
+      <div class="run-row">
+        <button id="run-btn" class="run-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+          Start search
+        </button>
+        <button id="stop-btn" class="stop-btn hidden">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+          Stop
+        </button>
+      </div>
+
+      <div id="status-bar" class="status-bar hidden">
+        <div class="spinner"></div>
+        <span id="status-text">Starting…</span>
+      </div>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Results</h1>
+          <p class="page-sub" id="results-count">No profiles found yet</p>
+        </div>
+        <div class="topbar-actions">
+        <button id="new-search-btn" class="new-search-btn hidden">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/>
+          </svg>
+          New Search
+        </button>
+        <button id="download-btn" class="download-btn hidden">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download CSV
+        </button>
+        </div>
+      </header>
+
+      <!-- Company progress pills -->
+      <div id="company-track" class="company-track hidden"></div>
+
+      <!-- Empty state -->
+      <div id="empty-state" class="empty-state">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <p>Connect LinkedIn, enter roles &amp; companies,<br>then hit <strong>Start search</strong><br><small style="color:var(--muted)">A browser window will open during search</small></p>
+      </div>
+
+      <!-- Results table -->
+      <div id="table-wrap" class="table-wrap hidden">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Title</th>
+              <th>Company</th>
+              <th>Location</th>
+              <th>Email</th>
+              <th>Via</th>
+              <th>↗</th>
+            </tr>
+          </thead>
+          <tbody id="results-body"></tbody>
+        </table>
+      </div>
+
+      <div id="error-log" class="error-log hidden"></div>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

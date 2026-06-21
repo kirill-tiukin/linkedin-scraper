@@ -1,0 +1,26 @@
+# Sensitive — never commit these
+.env
+linkedin_session.json
+*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Playwright
+.playwright/
+
+# Editor
+.vscode/
+.idea/
+
+# Output
+results.csv
+*.csv
+
+# OS
+.DS_Store
