@@ -28,7 +28,7 @@ def build_search_url(role: str, company: str, location: str = "") -> str:
 
 
 def _clean(text: str) -> str:
-    text = re.sub(r"[•·].*?(1st|2nd|3rd)\s*", "", text)
+    text = re.sub(r"\s*[•·].*$", "", text)  # strip degree badge in any language
     return re.sub(r"\s+", " ", text).strip()
 
 

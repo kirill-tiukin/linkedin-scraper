@@ -138,8 +138,11 @@ def _find_email(linkedin_url: str, api_key: str) -> str:
                             linkedin_url, attempt + 1, resp.status_code, resp.text[:400])
 
                 if resp.status_code == 408:
-                    # Long-poll timed out — retry
                     continue
+
+                if resp.status_code == 403:
+                    logger.warning("FinalScout 403 — API key invalid or credits exhausted")
+                    return "NO_CREDITS"
 
                 if resp.status_code != 200:
                     return ""
@@ -392,9 +395,12 @@ async def _async_scrape(job_id: str, params: dict) -> None:
 
         if finalscout_key:
             def _et(u=norm, k=finalscout_key, r=row):
-                email = _find_email(u, k)
-                r["email"] = email
-                q.put({"event": "email_update", "data": {"profile_url": u, "email": email}})
+                result = _find_email(u, k)
+                if result == "NO_CREDITS":
+                    q.put({"event": "status", "data": {"msg": "⚠️ FinalScout: API key invalid or credits exhausted — emails skipped"}})
+                    result = ""
+                r["email"] = result
+                q.put({"event": "email_update", "data": {"profile_url": u, "email": result}})
             t = threading.Thread(target=_et, daemon=True)
             t.start()
             email_threads.append(t)
